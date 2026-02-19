@@ -542,7 +542,6 @@ export default function JobFitAnalyst() {
   const [currentPhase, setCurrentPhase] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
   const resultsRef = useRef(null);
-  const abortControllerRef = useRef(null);
 
   // Input validation
   const validateInputs = useCallback(() => {
@@ -563,7 +562,15 @@ export default function JobFitAnalyst() {
 
   const callAgent = useCallback(
     async (agentId, extraContext = "") => {
-      if (!resume.trim() || !jobDescription.trim()) return null;
+      // FIX: Check minimum lengths (not just empty) and show error in UI instead of silently returning
+      if (resume.trim().length < MIN_RESUME_LENGTH || jobDescription.trim().length < MIN_JD_LENGTH) {
+        setAgentStatuses((prev) => ({ ...prev, [agentId]: "error" }));
+        setAgentOutputs((prev) => ({
+          ...prev,
+          [agentId]: `**Error**: Both resume and job description must be filled in before running agents. Resume needs at least ${MIN_RESUME_LENGTH} characters; job description needs at least ${MIN_JD_LENGTH}.`,
+        }));
+        return null;
+      }
 
       setAgentStatuses((prev) => ({ ...prev, [agentId]: "running" }));
       setActiveAgent(agentId);
@@ -575,6 +582,15 @@ export default function JobFitAnalyst() {
       try {
         const promptFn = AGENT_PROMPTS[agentId];
         const { system, user } = promptFn(resume, jobDescription, extraContext);
+
+        // FIX: Guard against a prompt that resolves to empty or near-empty content.
+        // Agent 2's user message is built solely from ${jd}, so if jobDescription is
+        // whitespace-only or slipped through, this catches it before the API call.
+        if (!user || user.trim().length < 20) {
+          throw new Error(
+            `Agent ${agentId} prompt resolved to empty content. Ensure both resume and job description are filled in.`
+          );
+        }
 
         const response = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
@@ -640,7 +656,7 @@ export default function JobFitAnalyst() {
         setAgentStatuses((prev) => ({ ...prev, [agentId]: "error" }));
         setAgentOutputs((prev) => ({
           ...prev,
-          [agentId]: `❌ **Error**: ${errorMessage}\n\nPlease check your inputs and try again. If the problem persists, this may be a temporary API issue.`,
+          [agentId]: `**Error**: ${errorMessage}\n\nPlease check your inputs and try again. If the problem persists, this may be a temporary API issue.`,
         }));
         return null;
       }
