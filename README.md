@@ -53,10 +53,10 @@ Upload the `.skill` file from the [Releases](../../releases) page, or upload the
 
 ```bash
 # Option 1: Clone to personal skills directory
-git clone https://github.com/openshawjr/job-fit-analyst.git ~/.claude/skills/job-fit-analyst
+git clone https://github.com/jropenshaw1/job-fit-analyst.git ~/.claude/skills/job-fit-analyst
 
 # Option 2: Add to a project
-git clone https://github.com/openshawjr/job-fit-analyst.git .claude/skills/job-fit-analyst
+git clone https://github.com/jropenshaw1/job-fit-analyst.git .claude/skills/job-fit-analyst
 ```
 
 ### Manual Installation
@@ -183,7 +183,7 @@ Apache 2.0 — see [LICENSE](LICENSE) for details.
 Created by **Jonathan Openshaw**  
 [GitHub](https://github.com/jropenshaw1) | [LinkedIn](https://www.linkedin.com/in/jonathan-o-79b31a2/))
 
-Built with Claude, optimized with TSH-9® protocol.
+Built with Claude, optimized with TSH-9® protocol | [X](https://mobile.twstalker.com/SeedOfTruthLabs).
 
 ---
 
