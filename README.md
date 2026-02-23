@@ -1,4 +1,3 @@
-# job-fit-analyst
 # Job Fit Analyst
 
 Multi-agent Claude skill that honestly evaluates job fit using Advocate/Auditor dual voices.
