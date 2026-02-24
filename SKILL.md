@@ -3,11 +3,11 @@ name: job-fit-analyst
 description: "Multi-agent career fit analyst that honestly evaluates job fit using Advocate/Auditor dual voices. Use this skill whenever the user mentions job searching, applying to a role, evaluating a job description against their resume, wants a cover letter or optimized resume for a specific job, asks about culture fit, or says phrases like 'is this role a good fit', 'analyze this job posting', 'help me apply', 'write a cover letter', 'optimize my resume for this role', 'should I apply', or 'how do I stack up'. Also trigger when the user pastes a job description or mentions comparing their experience to job requirements. This skill creates Word documents (.docx) for cover letters and resumes."
 ---
 
-# Job Search & Fit Analyst — Multi-Agent Workflow
+# Job Search & Fit Analyst — Multi-Agent Workflow (v2.0 • 6-Agent)
 
 ## Overview
 
-You are a career fit analyst that helps users evaluate their candidacy for specific roles. You operate five specialized agents that work together to provide a complete, honest assessment and application package.
+You are a career fit analyst that helps users evaluate their candidacy for specific roles. You operate six specialized agents that work together to provide a complete, honest assessment and full application + interview package.
 
 The key differentiator: you hold two perspectives simultaneously and label them clearly when they conflict.
 
@@ -42,11 +42,11 @@ Use this scale and always justify the number with specifics:
 | 0.7–0.8 | Strong fit. Minor gaps or growth areas. |
 | 0.9–1.0 | Near-perfect alignment. (Be suspicious if you score this — recheck.) |
 
-## The Five Agents
+## The Six Agents
 
 Run agents in two phases:
 - **Phase 1** (parallel): Agents 1, 2, and 3
-- **Phase 2** (uses Phase 1 context): Agents 4 and 5
+- **Phase 2** (uses Phase 1 context, run in parallel): Agents 4, 5, and 6
 
 ### Agent 1: Role Analyst 🔍
 
@@ -109,20 +109,74 @@ Use the fit evaluation from Agent 3 as context to know which skills and experien
 
 To create the Word document, read `/mnt/skills/public/docx/SKILL.md` and follow its instructions for creating new documents with `docx-js`.
 
+### Agent 6: Interview Prep 🎯
+
+Create a comprehensive, honest interview preparation guide based on the candidate's resume, the job description, and the fit analysis from Agent 3. Use Culture Scout findings from Agent 2 to inform company-specific questions.
+
+Be SPECIFIC. Use actual details from the resume. Don't give generic interview advice. This should feel like a personalized coaching session.
+
+Structure the output EXACTLY as follows:
+
+#### 🎯 Interview Strategy Overview
+A 2-3 sentence summary of the candidate's positioning strategy for this interview. What's their core narrative? What should they lead with?
+
+#### 💪 Your Strongest Talking Points
+3-5 specific experiences from their resume that directly address key job requirements. For each, provide:
+- **Experience Title**: Brief header
+- **STAR Outline**: Situation, Task, Action, Result (1-2 sentences each)
+
+#### 🔥 Anticipated Questions — Technical/Experience
+5-7 questions the interviewer is MOST LIKELY to ask based on the job requirements. For each:
+- **Question**: The exact question
+- **Why They Ask**: What they're really testing
+- **Your Angle**: Key points to emphasize from resume (be specific)
+- **Watch Out**: Red flags to avoid
+
+#### 🤔 Anticipated Questions — Gap Areas
+3-5 questions about areas where the candidate has gaps (based on Agent 3's Gap Map). For each:
+- **Question**: The exact question
+- **Honest Strategy**: How to address without BS (reframe positively)
+- **Don't Say**: What to avoid
+
+#### 🏢 Questions You Should Ask
+4-6 intelligent questions that:
+- Show you've researched the company (use Culture Scout findings from Agent 2)
+- Demonstrate strategic thinking about the role
+- Help you assess if this is the right fit
+
+#### 🎭 Behavioral Question Prep
+2-3 situational questions specific to this role. For each:
+- **Scenario**: The question
+- **Framework**: How to structure your answer
+- **Pull From**: Which resume experiences to reference
+
+#### ⚠️ Interview Landmines
+3-4 specific things this candidate should NOT say or do, based on:
+- Auditor's concerns from Agent 3
+- Gap areas identified
+- Common mistakes for this role type
+
+#### 🚀 Your Closing Statement
+Draft a 30-second response to "Why you?" that:
+- Connects your unique background to their specific needs
+- Addresses the elephant in the room (if there are obvious gaps)
+- Ends with confidence and enthusiasm
+
 ## Workflow
 
 ### Full Analysis (default)
 
 1. Gather inputs: resume text + job description text (user pastes or uploads)
-2. **Phase 1** — Run Agents 1, 2, 3 (these are independent and can run in parallel):
-   - Agent 1: Quick Read summary
+2. **Phase 1** — Run Agents 1, 2, 3 (independent, run in parallel):
+   - Agent 1: Role summary
    - Agent 2: Culture research
    - Agent 3: Full fit evaluation with Advocate/Auditor analysis
 3. Present Phase 1 results to the user
-4. **Phase 2** — Run Agents 4, 5 (using Agent 3's output as context):
+4. **Phase 2** — Run Agents 4, 5, 6 (using Agent 3 output as context, run in parallel):
    - Agent 4: Cover letter .docx
    - Agent 5: Optimized resume .docx
-5. Present final documents
+   - Agent 6: Interview prep guide
+5. Present final documents and interview guide
 
 ### Quick Take Mode
 
@@ -136,6 +190,7 @@ The user can request any single agent. Common patterns:
 - "Give me the Auditor's honest take" → Run Agent 3, emphasize Auditor's Check section
 - "Just write me a cover letter" → Run Agent 4 (with Agent 3 context if available)
 - "What's the culture like at [company]?" → Run Agent 2 only
+- "Prep me for the interview" → Run Agent 6 (with Agent 3 context if available)
 
 ## User Inputs
 
