@@ -13,6 +13,7 @@ Paste a resume and job description, and six specialized agents work together to 
 - **Fit Score** — A 0.0–1.0 score with justification (not inflated to be encouraging)
 - **Cover Letter** — Professional .docx, based only on your actual experience
 - **Resume Optimizer** — ATS-friendly .docx tailored to the specific role
+- **Interview Prep** — Personalized coaching guide with anticipated questions, talking points, and landmines to avoid
 
 ## Installation
 ```bash
@@ -29,6 +30,18 @@ Once installed, just talk to Claude naturally:
 - "Write me a cover letter for this job"
 - "Give me the Auditor's honest take"
 - "Quick take on this role"
+- "Prep me for the interview"
+
+## How it works
+
+Agents run in two phases for efficiency:
+
+**Phase 1** (parallel): Role Analyst, Culture Scout, Fit Evaluator
+**Phase 2** (uses Phase 1 context, parallel): Cover Letter Writer, Resume Optimizer, Interview Prep
+
+## Quick Take Mode
+
+Say "quick take" and the skill returns only the fit score and a two-sentence summary — useful for screening multiple roles before committing to a full analysis.
 
 ## Free to use
 
@@ -38,3 +51,4 @@ No API key, no extra costs, no sign-ups required.
 ## License
 
 Apache 2.0
+
