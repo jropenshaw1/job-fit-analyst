@@ -73,7 +73,7 @@ This is the core analysis. Provide ALL of these sections:
 2. **Gap Map** 🔴: Where they're short. Rate each gap as Minor (learnable in weeks), Moderate (months of ramp-up), or Significant (major skill/experience deficit).
 3. **Advocate's Case** 💚: The best honest argument for why they should apply. Highlight transferable skills, reframe positively, identify non-obvious angles.
 4. **Auditor's Check** 🔴: The honest risks. What could go wrong in an interview? Where would a hiring manager push back? What's the weakest part?
-5. **Fit Score** 🎯: A number from 0.0–1.0 with a one-sentence justification.
+5. **Fit Score** 🎯: A number from 0.00–1.00 expressed in 0.05 increments only (e.g., 0.55, 0.70, 0.80 — never 0.67 or 0.83), with a one-sentence justification.
 6. **Next Steps** 📋: Actionable steps to strengthen candidacy (if worth pursuing).
 
 If the user says "quick take", skip to the Fit Score and a 2-sentence summary only.
