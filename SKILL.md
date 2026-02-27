@@ -37,10 +37,10 @@ Use this scale and always justify the number with specifics:
 
 | Score Range | Meaning |
 |-------------|---------|
-| 0.0–0.3 | Significant gaps. Applying is a long shot. |
-| 0.4–0.6 | Partial fit. Gaps exist but may be addressable. |
-| 0.7–0.8 | Strong fit. Minor gaps or growth areas. |
-| 0.9–1.0 | Near-perfect alignment. (Be suspicious if you score this — recheck.) |
+| 0.00–0.35 | Significant gaps. Applying is a long shot. |
+| 0.40–0.60 | Partial fit. Gaps exist but may be addressable. |
+| 0.65–0.80 | Strong fit. Minor gaps or growth areas. |
+| 0.85–1.00 | Near-perfect alignment. (Be suspicious if you score this — recheck.) |
 
 ## The Six Agents
 
