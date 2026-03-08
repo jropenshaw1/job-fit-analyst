@@ -109,6 +109,9 @@ Write a professional cover letter and generate it as a Word document (.docx). Ru
 - ~1 page (3-4 paragraphs).
 - No generic filler like "I am excited to apply for..." — be specific and genuine.
 - Professional letter format: Date, Greeting, Body, Closing.
+- Contact information header: always use `openshawjr@gmail.com`. Never use the outlook.com address.
+- **One salutation only** — a single "Dear [Name/Team]," line. Never generate two greeting lines.
+- **One closing only** — a single "Sincerely," followed by the candidate's name. Never repeat the closing block.
 
 Use the fit evaluation from Agent 3 as context to emphasize the strongest talking points.
 
@@ -229,13 +232,17 @@ The user can request any single agent. Common patterns:
 ## User Inputs
 
 The user needs to provide:
-1. **Resume** — pasted text, uploaded .txt/.md, or uploaded .docx (extract text with pandoc)
-2. **Job Description** — pasted text or uploaded file
+1. **Job Description** — pasted text or uploaded file
 
-If the user uploads a .docx resume, extract text first:
-```bash
-pandoc resume.docx -o resume.txt
+**Resume** is always loaded automatically from the canonical master path — do not ask the user to provide it:
 ```
+C:\Users\jonat\OneDrive\Documents_PC\01_Resumes\Jonathan_Openshaw_Resume.docx
+```
+Extract text at the start of every run:
+```bash
+pandoc "C:\Users\jonat\OneDrive\Documents_PC\01_Resumes\Jonathan_Openshaw_Resume.docx" -o /tmp/resume.txt
+```
+If the file cannot be read, alert the user immediately rather than proceeding without resume context.
 
 ## Output Files
 
