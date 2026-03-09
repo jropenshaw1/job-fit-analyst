@@ -109,7 +109,7 @@ Write a professional cover letter and generate it as a Word document (.docx). Ru
 - ~1 page (3-4 paragraphs).
 - No generic filler like "I am excited to apply for..." — be specific and genuine.
 - Professional letter format: Date, Greeting, Body, Closing.
-- Contact information header: always use `openshawjr@gmail.com`. Never use the outlook.com address.
+- Contact information header: use the candidate's contact details as found in their provided resume. Do not hardcode any email address or personal information.
 - **One salutation only** — a single "Dear [Name/Team]," line. Never generate two greeting lines.
 - **One closing only** — a single "Sincerely," followed by the candidate's name. Never repeat the closing block.
 
@@ -201,9 +201,17 @@ Draft a 30-second response to "Why you?" that:
 
 ## Workflow
 
+### Input Validation (always run first)
+
+Before executing any agent, confirm both inputs are present in the conversation:
+- Job Description text or file
+- Resume text or file
+
+If either is missing, issue the appropriate message from the User Inputs section and stop. Do not run any agent until both are confirmed.
+
 ### Full Analysis (default)
 
-1. Gather inputs: resume text + job description text (user pastes or uploads)
+1. Confirm both inputs are present (see Input Validation above)
 2. **Phase 1** — Run Agents 1, 2, 3 (independent, run in parallel):
    - Agent 1: Role summary
    - Agent 2: Culture research
@@ -231,18 +239,21 @@ The user can request any single agent. Common patterns:
 
 ## User Inputs
 
-The user needs to provide:
-1. **Job Description** — pasted text or uploaded file
+Both inputs are required. If either is missing, stop immediately and tell the user what is needed before running any agents.
 
-**Resume** is always loaded automatically from the canonical master path — do not ask the user to provide it:
-```
-C:\Users\jonat\OneDrive\Documents_PC\01_Resumes\Jonathan_Openshaw_Resume.docx
-```
-Extract text at the start of every run:
-```bash
-pandoc "C:\Users\jonat\OneDrive\Documents_PC\01_Resumes\Jonathan_Openshaw_Resume.docx" -o /tmp/resume.txt
-```
-If the file cannot be read, alert the user immediately rather than proceeding without resume context.
+1. **Job Description** — pasted text or uploaded file
+2. **Resume** — pasted text or uploaded file
+
+**If the Job Description is missing:**
+> "To run the fit analysis I need the job description. Please paste the full JD text or upload the file, then I can proceed."
+
+**If the Resume is missing:**
+> "To run the fit analysis I need your resume. Please paste the text or upload your resume file, then I can proceed."
+
+**If both are missing:**
+> "To run the fit analysis I need two things: the job description and your resume. Please provide both — you can paste the text or upload the files — and I'll get started."
+
+Do not attempt to load a resume from any hardcoded path. Do not proceed with any agent until both inputs are confirmed present.
 
 ## Output Files
 
