@@ -3,7 +3,7 @@ name: job-fit-analyst
 description: "Multi-agent career fit analyst that honestly evaluates job fit using Advocate/Auditor dual voices. Use this skill whenever the user mentions job searching, applying to a role, evaluating a job description against their resume, wants a cover letter or optimized resume for a specific job, asks about culture fit, or says phrases like 'is this role a good fit', 'analyze this job posting', 'help me apply', 'write a cover letter', 'optimize my resume for this role', 'should I apply', or 'how do I stack up'. Also trigger when the user pastes a job description or mentions comparing their experience to job requirements. This skill creates Word documents (.docx) for cover letters and resumes."
 ---
 
-# Job Search & Fit Analyst — Multi-Agent Workflow (v2.1 • 6-Agent)
+# Job Search & Fit Analyst — Multi-Agent Workflow (v2.2 • 6-Agent)
 
 ## Overview
 
@@ -114,6 +114,25 @@ Write a professional cover letter and generate it as a Word document (.docx). Ru
 - **One closing only** — a single "Sincerely," followed by the candidate's name. Never repeat the closing block.
 
 Use the fit evaluation from Agent 3 as context to emphasize the strongest talking points.
+
+**Self-Audit Pass — required before generating the document:**
+
+After drafting the cover letter, stop and perform a claim-by-claim integrity check before writing the final .docx. For every specific claim in the letter — every metric, named technology, named framework, named methodology, named compliance standard, or scoped accomplishment — ask:
+
+1. Can I point to a specific line, bullet, or role in the source resume that grounds this claim?
+2. Is the scope and seniority of the claim consistent with what the resume actually describes?
+3. Is any part of this claim borrowed from the JD and attributed to the candidate without a resume source?
+
+**High-risk fabrication targets — apply extra scrutiny to these:**
+- Named compliance frameworks (SOC 2, ISO 27001, NIST, HIPAA, FedRAMP, etc.) — only use if explicitly named in the resume
+- Named certifications or credentials not listed in the resume
+- Team sizes, budget figures, or metrics that differ from resume values
+- Technologies or platforms mentioned in the JD but absent from the resume
+- Seniority descriptors (board-level, C-suite, enterprise-wide) that exceed documented scope
+
+For any claim that fails one or more tests: rewrite it using only what the resume supports, or remove it entirely. Do not soften and retain — a fabricated claim that survives as a hedge is still a fabrication. The candidate's credibility in an interview is the asset being protected.
+
+Do not proceed to document generation until the self-audit pass is complete.
 
 To create the Word document, read `/mnt/skills/public/docx/SKILL.md` and follow its instructions for creating new documents with `docx-js`.
 
