@@ -43,6 +43,9 @@ No API key, no extra costs, no sign-ups required.
 
 ## Changelog
 
+### v2.2
+- Added mandatory Self-Audit Pass to Cover Letter Writer (Agent 4) � claim-by-claim integrity check before document generation, with a high-risk fabrication target list covering compliance frameworks, certifications, metrics, JD-only technologies, and seniority descriptors
+
 ### v2.1
 - Added Source Integrity Layer governing all six agents — every output must be traceable to the source resume before it leaves an agent
 - Added mandatory self-audit pass to Resume Optimizer (Agent 5) — ungrounded bullets are silently removed before document generation
@@ -60,5 +63,5 @@ No API key, no extra costs, no sign-ups required.
 
 ## License
 
-Apache 2.0
+MIT
 
