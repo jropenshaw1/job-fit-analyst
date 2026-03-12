@@ -3,7 +3,7 @@ name: job-fit-analyst
 description: "Multi-agent career fit analyst that honestly evaluates job fit using Advocate/Auditor dual voices. Use this skill whenever the user mentions job searching, applying to a role, evaluating a job description against their resume, wants a cover letter or optimized resume for a specific job, asks about culture fit, or says phrases like 'is this role a good fit', 'analyze this job posting', 'help me apply', 'write a cover letter', 'optimize my resume for this role', 'should I apply', or 'how do I stack up'. Also trigger when the user pastes a job description or mentions comparing their experience to job requirements. This skill creates Word documents (.docx) for cover letters and resumes."
 ---
 
-# Job Search & Fit Analyst — Multi-Agent Workflow (v2.3 • 6-Agent)
+# Job Search & Fit Analyst — Multi-Agent Workflow (v2.4 • 6-Agent)
 
 ## Overview
 
@@ -112,6 +112,7 @@ Write a professional cover letter and generate it as a Word document (.docx). Ru
 - Contact information header: use the candidate's contact details as found in their provided resume. Do not hardcode any email address or personal information.
 - **One salutation only** — a single "Dear [Name/Team]," line. Never generate two greeting lines.
 - **One closing only** — a single "Sincerely," followed by the candidate's name. Never repeat the closing block.
+- **Job title accuracy** — use the exact job title as it appears in the job description. Do not paraphrase, shorten, or reword it.
 
 Use the fit evaluation from Agent 3 as context to emphasize the strongest talking points.
 
@@ -231,6 +232,7 @@ After drafting the full interview prep guide, stop and perform a claim-by-claim 
 For any section that fails one or more of these tests, rewrite it to stay within what the resume actually documents. If a pivot strategy cannot be grounded in real experience, say "You'll need to acknowledge this is new territory for you" rather than inventing a technical angle. A strategy the candidate can't actually defend in an interview is worse than no strategy at all.
 
 Do not present the guide until the self-audit pass is complete.
+
 ## Workflow
 
 ### Input Validation (always run first)
@@ -289,7 +291,20 @@ Do not attempt to load a resume from any hardcoded path. Do not proceed with any
 
 ## Output Files
 
-- Cover letter: `/mnt/user-data/outputs/cover_letter_[company].docx`
-- Optimized resume: `/mnt/user-data/outputs/resume_optimized_[company].docx`
+Output filenames must be filesystem-safe. Before constructing any filename, sanitize the company name and role title components:
+- Remove all spaces
+- Strip commas, periods, slashes, ampersands, and special characters
+- Keep only alphanumeric characters and hyphens
+- Use underscore as the separator between company and role components
+
+Examples of correct sanitization:
+- "Nielsen" + "Director, IT Infrastructure Engineering" → `Nielsen_DirectorITInfrastructureEngineering`
+- "AT&T" + "VP, Cloud Operations" → `ATT_VPCloudOperations`
+
+Apply this sanitization to all output filenames:
+
+- Cover letter: `/mnt/user-data/outputs/CoverLetter_[Company]_[Role].docx`
+- Optimized resume: `/mnt/user-data/outputs/Resume_[Company]_[Role].docx`
+- Interview guide (if saved): `/mnt/user-data/outputs/InterviewGuide_[Company]_[Role].docx`
 
 Always present files to the user with the `present_files` tool after creation.

@@ -4,6 +4,18 @@ All notable changes to this skill are documented here.
 
 ---
 
+## [v2.4] — 2026-03-11
+
+### Added
+- **Output filename sanitization rule** — All output filenames now follow PipelinePilot's sanitization convention: spaces removed, commas/periods/special characters stripped, alphanumeric only, underscore as company/role separator.
+- **Filename convention updated** — Output files now follow `CoverLetter_[Company]_[Role].docx` / `Resume_[Company]_[Role].docx` / `InterviewGuide_[Company]_[Role].docx` with sanitized components. Sanitization examples included in skill to guide correct behavior.
+- **Job title accuracy rule** — Agent 4 now explicitly required to use the exact job title from the JD without paraphrasing or rewording.
+
+### Fixed
+- Cover letter filename contained a literal comma when role title included punctuation (e.g., `CoverLetter_Nielsen_Director,ITInfrastructureEngineering.docx`), causing Word title bar corruption and filesystem issues.
+
+---
+
 ## [v2.3] — 2026-03-11
 
 ### Added
