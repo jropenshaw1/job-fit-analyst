@@ -3,7 +3,7 @@ name: job-fit-analyst
 description: "Multi-agent career fit analyst that honestly evaluates job fit using Advocate/Auditor dual voices. Use this skill whenever the user mentions job searching, applying to a role, evaluating a job description against their resume, wants a cover letter or optimized resume for a specific job, asks about culture fit, or says phrases like 'is this role a good fit', 'analyze this job posting', 'help me apply', 'write a cover letter', 'optimize my resume for this role', 'should I apply', or 'how do I stack up'. Also trigger when the user pastes a job description or mentions comparing their experience to job requirements. This skill creates Word documents (.docx) for cover letters and resumes."
 ---
 
-# Job Search & Fit Analyst — Multi-Agent Workflow (v2.2 • 6-Agent)
+# Job Search & Fit Analyst — Multi-Agent Workflow (v2.3 • 6-Agent)
 
 ## Overview
 
@@ -218,6 +218,19 @@ Draft a 30-second response to "Why you?" that:
 - Addresses the elephant in the room (if there are obvious gaps)
 - Ends with confidence and enthusiasm
 
+**Self-Audit Pass — required before finalizing the interview guide:**
+
+After drafting the full interview prep guide, stop and perform a claim-by-claim integrity check before presenting it. For every strategy recommendation, talking point, "Your Angle," "Honest Strategy," STAR outline, behavioral framework, and closing statement, ask:
+
+1. Is the specific experience, skill, tool, or credential referenced actually documented in the source resume — not inferred from a general concept like "cloud migration" or "vendor management"?
+2. Does the scope and framing accurately reflect what the resume claims, without inflation?
+3. Was any specific technical claim borrowed from the JD and attributed to the candidate without a source?
+
+**The inference trap:** If the resume says a candidate led a cloud migration, you may not infer from that they have experience with AWS IAM governance, user provisioning automation, or any other specific sub-discipline not named in the resume. General concepts do not license specific technical claims.
+
+For any section that fails one or more of these tests, rewrite it to stay within what the resume actually documents. If a pivot strategy cannot be grounded in real experience, say "You'll need to acknowledge this is new territory for you" rather than inventing a technical angle. A strategy the candidate can't actually defend in an interview is worse than no strategy at all.
+
+Do not present the guide until the self-audit pass is complete.
 ## Workflow
 
 ### Input Validation (always run first)
