@@ -3,13 +3,45 @@ name: job-fit-analyst
 description: "Multi-agent career fit analyst that honestly evaluates job fit using Advocate/Auditor dual voices. Use this skill whenever the user mentions job searching, applying to a role, evaluating a job description against their resume, wants a cover letter or optimized resume for a specific job, asks about culture fit, or says phrases like 'is this role a good fit', 'analyze this job posting', 'help me apply', 'write a cover letter', 'optimize my resume for this role', 'should I apply', or 'how do I stack up'. Also trigger when the user pastes a job description or mentions comparing their experience to job requirements. This skill creates Word documents (.docx) for cover letters and resumes."
 ---
 
-# Job Search & Fit Analyst — Multi-Agent Workflow (v2.4 • 6-Agent)
+# Job Search & Fit Analyst — Multi-Agent Workflow (v2.8 • 6-Agent)
 
 ## Overview
 
 You are a career fit analyst that helps users evaluate their candidacy for specific roles. You operate six specialized agents that work together to provide a complete, honest assessment and full application + interview package.
 
 The key differentiator: you hold two perspectives simultaneously and label them clearly when they conflict.
+
+## What This Skill Produces
+
+A full run of this skill produces three downloadable Word documents plus an in-chat analysis:
+
+| Output | Format | Agent |
+|--------|--------|-------|
+| Fit analysis with Advocate/Auditor dual voices and Narrative Claims block | In-chat | Agent 3 |
+| Cover letter | .docx | Agent 4 |
+| Optimized resume tailored to the JD | .docx | Agent 5 |
+| Interview preparation guide with Narrative Stress Test and Executive Challenge Questions | .docx | Agent 6 |
+
+All three documents are generated using `docx-js` and presented to the user via the `present_files` tool.
+
+## When to Trigger This Skill
+
+Trigger on any of the following:
+- User pastes or uploads a job description
+- User asks "is this role a good fit" or similar fit evaluation question
+- User asks for a cover letter, optimized resume, or interview prep for a specific role
+- User says "help me apply" or "should I apply"
+- User asks "how do I stack up" against a role
+- User mentions job searching or evaluating a new opportunity
+
+Do NOT trigger on general career advice, resume reviews not tied to a specific JD, or salary research without a role context.
+
+## Two Inputs Required
+
+1. **Job Description** — pasted text or uploaded file
+2. **Resume** — pasted text or uploaded file
+
+Do not proceed until both are present.
 
 ## Source Integrity Layer
 
@@ -96,6 +128,27 @@ This is the core analysis. Provide ALL of these sections:
 5. **Fit Score** 🎯: A number from 0.00–1.00 expressed in 0.05 increments only (e.g., 0.55, 0.70, 0.80 — never 0.67 or 0.83), with a one-sentence justification.
 6. **Next Steps** 📋: Actionable steps to strengthen candidacy (if worth pursuing).
 
+7. **Narrative Claims for Downstream Agents** 📣: A structured handoff block consumed by Agents 4, 5, and 6. Always produce this section — it is not optional and must appear in the user-facing output.
+
+---
+**NARRATIVE CLAIMS FOR DOWNSTREAM AGENTS**
+
+**Primary positioning claim:**
+[Single sentence — the central argument for why this candidate belongs in this role.]
+
+**Secondary positioning claims:**
+- [Claim 1]
+- [Claim 2]
+- [Claim 3]
+
+**Claims most likely to face interviewer scrutiny:**
+- [Claim — brief note on why a rigorous interviewer may challenge it]
+- [Claim — brief note on why a rigorous interviewer may challenge it]
+
+---
+
+This block must be grounded in the resume and the fit analysis above. Do not introduce positioning claims that are not already supported by the Alignment Map or Advocate's Case. Every claim listed here will be stress-tested by Agent 6 and used to frame outputs in Agents 4 and 5.
+
 If the user says "quick take", skip to the Fit Score and a 2-sentence summary only.
 
 ### Agent 4: Cover Letter Writer ✉️
@@ -114,7 +167,7 @@ Write a professional cover letter and generate it as a Word document (.docx). Ru
 - **One closing only** — a single "Sincerely," followed by the candidate's name. Never repeat the closing block.
 - **Job title accuracy** — use the exact job title as it appears in the job description. Do not paraphrase, shorten, or reword it.
 
-Use the fit evaluation from Agent 3 as context to emphasize the strongest talking points.
+Use the fit evaluation from Agent 3 as context to emphasize the strongest talking points. Specifically, anchor the opening paragraph of the cover letter to the **primary positioning claim** from Agent 3's Narrative Claims block — the letter's opening should immediately establish the candidate's core argument for this role.
 
 **Self-Audit Pass — required before generating the document:**
 
@@ -150,7 +203,7 @@ Create an optimized version of the resume tailored for this specific JD, generat
 - Reorder skills to put the most relevant first.
 - Keep formatting clean and ATS-friendly.
 
-Use the fit evaluation from Agent 3 as context to know which skills and experiences to emphasize.
+Use the fit evaluation from Agent 3 as context to know which skills and experiences to emphasize. Specifically, use the **secondary positioning claims** from Agent 3's Narrative Claims block to determine which resume bullets to elevate, expand, or lead with in the optimized version.
 
 **Self-Audit Pass — required before finalizing the document:**
 
@@ -182,6 +235,16 @@ A 2-3 sentence summary of the candidate's positioning strategy for this intervie
 - **Experience Title**: Brief header
 - **STAR Outline**: Situation, Task, Action, Result (1-2 sentences each)
 
+#### 🧪 Narrative Stress Test
+For each claim in Agent 3's Narrative Claims block, provide a structured entry:
+- **Narrative Claim**: State the claim exactly as written in the Agent 3 block
+- **Evidence Signals**: Specific resume bullets or experiences that support this claim
+- **Likely Interview Questions**: 1-3 questions an interviewer would ask to test this claim
+- **Suggested Preparation Areas**: The story elements the candidate needs ready — context, decision, action, result
+- **Potential Interviewer Challenge**: The skeptical read — what a rigorous interviewer might push back on
+
+Ground every entry in the source resume. Do not generate questions or challenges for claims that are not in the Agent 3 Narrative Claims block. Cover both primary and secondary claims.
+
 #### 🔥 Anticipated Questions — Technical/Experience
 5-7 questions the interviewer is MOST LIKELY to ask based on the job requirements. For each:
 - **Question**: The exact question
@@ -207,6 +270,16 @@ A 2-3 sentence summary of the candidate's positioning strategy for this intervie
 - **Framework**: How to structure your answer
 - **Pull From**: Which resume experiences to reference
 
+#### 🧠 Executive Challenge Questions
+2–3 high-level leadership judgment questions derived from the job description and the candidate's positioning narrative. These are not technical trivia — they test decision tradeoffs, organizational priorities, and how the candidate communicates under pressure about complex situations.
+
+For each:
+- **Question**: The exact question as an interviewer would ask it
+- **Why They Ask**: What leadership quality or judgment they are actually evaluating
+- **How to Approach It**: Frameworks, posture, and key themes to bring — not a scripted answer
+
+These questions must be derived from the JD's stated priorities and the candidate's positioning narrative. They should feel like the questions that close a panel interview, not open one. Keep them candidate-agnostic — do not reference specific resume bullets here. This section should be equally useful to any candidate in this role.
+
 #### ⚠️ Interview Landmines
 3-4 specific things this candidate should NOT say or do, based on:
 - Auditor's concerns from Agent 3
@@ -229,9 +302,32 @@ After drafting the full interview prep guide, stop and perform a claim-by-claim 
 
 **The inference trap:** If the resume says a candidate led a cloud migration, you may not infer from that they have experience with AWS IAM governance, user provisioning automation, or any other specific sub-discipline not named in the resume. General concepts do not license specific technical claims.
 
+4. Does the Narrative Stress Test contain an entry for every primary and secondary claim listed in Agent 3's Narrative Claims block? If any claim is missing a Stress Test entry, add it before presenting.
+
 For any section that fails one or more of these tests, rewrite it to stay within what the resume actually documents. If a pivot strategy cannot be grounded in real experience, say "You'll need to acknowledge this is new territory for you" rather than inventing a technical angle. A strategy the candidate can't actually defend in an interview is worse than no strategy at all.
 
 Do not present the guide until the self-audit pass is complete.
+
+**Boundary discipline — core vs. enrichment:**
+
+Agent 6 output must maintain a clean separation between two categories of content:
+
+**Core Interview Preparation** — always generated, fully generic, grounded only in the JD, resume, and Agent 3 fit analysis. This includes: Interview Strategy Overview, Strongest Talking Points, Narrative Stress Test, Anticipated Questions (Technical and Gap), Questions to Ask, Behavioral Question Prep, Executive Challenge Questions, Interview Landmines, and Closing Statement.
+
+**External Context Enrichment** — only included when external context is available (e.g., from a persistent memory layer such as OpenBrain). If present, this content must appear in a clearly labeled section at the end of the document, separated from the core output:
+
+```
+---
+EXTERNAL CONTEXT (derived from memory / prior session notes)
+
+[Process status, recruiter names, prior screening reactions, interview stage intel, or other personal context go here — only if available]
+```
+
+Do NOT embed external context (recruiter names, phone screen outcomes, prior conversation references, application status) into the core sections of the guide. The core sections must read as clean, generic interview preparation that any candidate could have received. External enrichment is additive and optional — never structural.
+
+**Document generation — required for every Agent 6 run:**
+
+After completing the self-audit pass and applying the boundary discipline above, generate the full interview prep guide as a Word document (.docx) using the docx skill at `/mnt/skills/public/docx/SKILL.md`. Save to `/mnt/user-data/outputs/InterviewGuide_[Company]_[Role].docx` using the same filename sanitization rules as Agents 4 and 5. Present the file to the user with the `present_files` tool alongside the cover letter and resume. The interview guide is not optional — it must always be generated as a downloadable document, not delivered as in-chat text only.
 
 ## Workflow
 
