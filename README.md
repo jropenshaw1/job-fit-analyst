@@ -140,9 +140,43 @@ Copy the `job-fit-analyst` folder into your Claude skills directory (typically `
 
 ---
 
-## Optional Enrichment
+## Companion Context Skill (Personalization Layer)
 
-The skill is fully functional with just a resume and JD. However, if you maintain a persistent memory layer (such as OpenBrain or a similar tool), the Interview Prep agent can incorporate real context — active application status, recruiter screening notes, what resonated in prior conversations, hiring manager intelligence — without any changes to the skill itself. That enrichment stays outside the core skill and is never required for it to function.
+The skill is fully functional with just a resume and JD. Every user gets the same six-agent analysis, the same Source Integrity Layer, the same Advocate/Auditor framework. No personalization required.
+
+But the cover letters, optimized resumes, and interview guides the skill produces are inherently generic. They are grounded and honest, but they don't sound like you. A companion context skill changes that.
+
+### What It Is
+
+A companion context skill is a private `SKILL.md` file you write and maintain separately from the Job Fit Analyst. It carries your personal voice, your career narrative, your signature proof points, and the framing rules you want applied to every application. When loaded alongside the Job Fit Analyst, it enriches Agents 4 (Cover Letter), 5 (Resume), and 6 (Interview Guide) without modifying the skill's core logic.
+
+### What to Include
+
+Build your companion skill incrementally. Start with the sections that matter most and add over time.
+
+- **Identity and positioning:** Your career thesis. What kind of leader/contributor you are. Target roles and geography.
+- **Voice and tone rules:** How your writing should read. Words to use, words to ban. Register, formality, first-person style.
+- **Signature war stories:** Your 4-7 strongest career proof points with real numbers. Each tagged with the situations where it should be deployed.
+- **Standing framing decisions:** Rules that apply everywhere. Degree equivalency handling, year-count preferences, scope accuracy flags, contact info, formatting.
+- **Current search posture:** Active applications, certifications, excluded companies, anything an agent should know about your current context.
+- **Agent-specific guidance:** What the cover letter should feel like. What the resume optimizer must preserve. What the interview guide should draw from for STAR outlines and closing statements.
+
+### Setup
+
+1. Create a folder named `your-name-context/` in your Claude skills directory.
+2. Write a `SKILL.md` file following the structure above.
+3. In the YAML front matter, set trigger phrases that link it to the Job Fit Analyst workflow (e.g., "write my cover letter", "optimize my resume", "interview guide", "personalize this").
+4. The skill loads automatically alongside the Job Fit Analyst when triggered. No changes to the Job Fit Analyst skill are needed.
+
+### What Changes (and What Doesn't)
+
+With a companion skill loaded, the Phase 2 agents draw from your context the way a ghostwriter draws from interview notes: the analysis and structure come from the Job Fit Analyst, the voice and specificity come from your companion skill. The Source Integrity Layer still governs every claim. Your war stories are only used where they genuinely map to the JD. The Advocate/Auditor framework is unchanged.
+
+What changes is that the output reads like you wrote it on a good day.
+
+### Persistent Memory Integration
+
+If you maintain a persistent memory layer (such as [OpenBrain](https://github.com/open-brain) or a similar tool), the Interview Prep agent can also incorporate real-time context: active application status, recruiter screening notes, what resonated in prior conversations, hiring manager intelligence. This enrichment appears in a clearly labeled `EXTERNAL CONTEXT` section at the end of the interview guide, separate from core preparation content. It is additive and never required.
 
 ---
 
@@ -150,7 +184,12 @@ The skill is fully functional with just a resume and JD. However, if you maintai
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-**Current version: v2.7**
+**Current version: v2.8**
+
+### v2.8
+- Expanded "Optional Enrichment" section into full **Companion Context Skill** documentation: explains what it is, what to include, how to set it up, and how it interacts with the Source Integrity Layer and Advocate/Auditor framework
+- Added Persistent Memory Integration subsection covering OpenBrain and similar tools
+- Quick-fit skill now documented in [PipelinePilot](https://github.com/jropenshaw1/PipelinePilot) README as the upstream triage layer that feeds into Job Fit Analyst's full analysis
 
 ### v2.7
 - Agent 6 boundary discipline: core interview preparation (always generic, always generated) is now explicitly separated from external context enrichment (OpenBrain, memory layers, prior session notes). External context is appended in a clearly labeled `EXTERNAL CONTEXT` section at the end of the document when available — never embedded into core sections. Preserves universal usability while enabling full personalization.
