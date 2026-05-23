@@ -4,6 +4,41 @@ All notable changes to this skill are documented here.
 
 ---
 
+## [v2.9] — 2026-05-23
+
+### Removed
+- **Agent 5 (Resume Optimizer)** — Removed from the pipeline entirely. Agent 5 was designed to produce a JD-tailored resume as a .docx, but never achieved reliable output quality. The effort to fix it was not justified by its value relative to the other agents. Removing it eliminates wasted tokens and processing time on every run — significant when running multiple JFAs in sequence.
+
+### Changed
+- Skill version: v2.8 6-Agent → v2.9 5-Agent
+- Phase 2 now runs Agents 4 and 6 in parallel (previously 4, 5, and 6)
+- Agent 3 Narrative Claims handoff block now consumed by Agents 4 and 6 (previously 4, 5, and 6)
+- Narrative Claims grounding note updated to reference cover letter framing in Agent 4 only (previously referenced "outputs in Agents 4 and 5")
+- Source Integrity Layer output list updated: "analysis, cover letter, interview prep" (previously included "optimized resume")
+- Output files reduced to two .docx deliverables: CoverLetter and InterviewGuide (previously three)
+- Trigger phrases updated: removed "optimize my resume for this role" and "optimized resume" references
+- Frontmatter description updated to reflect cover letters and interview guides only
+
+### Fixed
+- **Output table and file list now document all four generated files**: fit_analysis.md (machine-readable, for PipelinePilot), FitAnalysis_[Company].docx (human-readable), CoverLetter, and InterviewGuide. The .md and FitAnalysis .docx were previously undocumented in both SKILL.md and README.
+
+### Not affected
+- Agents 1, 2, 3, 4, and 6: zero changes to logic, self-audit passes, or output format
+- Source Integrity Layer: unchanged
+- Advocate/Auditor framework: unchanged
+- Narrative Claims system: unchanged (Agent 5 consumed secondary claims but was the only consumer removed — Agent 4 still anchors to primary claim, Agent 6 still stress-tests all claims)
+
+---
+
+## [v2.8] — 2026-03-28
+
+### Added
+- **Agent 6 boundary discipline** — Formalized the separation between core interview preparation and external context enrichment introduced in v2.7 as an explicit document-level requirement. Interview guide must always be delivered as .docx, never as in-chat text only.
+- **Companion Context Skill documentation** — README expanded with full guidance on building a personal context skill: what to include, how to set it up, how it interacts with the Source Integrity Layer and Advocate/Auditor framework.
+- **Persistent Memory Integration** — README subsection covering OpenBrain and similar tools for real-time interview context enrichment.
+
+---
+
 ## [v2.7] — 2026-03-13
 
 ### Added

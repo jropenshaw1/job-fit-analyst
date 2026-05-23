@@ -2,7 +2,7 @@
 
 **A multi-agent Claude skill that builds your complete job application package — honestly.**
 
-Six specialized agents work together to evaluate your fit, write your cover letter, optimize your resume, and prepare you for the interview. Every output is grounded in what you actually did. No invented experience. No inflated claims. No content that falls apart when a hiring manager pushes back.
+Five specialized agents work together to evaluate your fit, write your cover letter, and prepare you for the interview. Every output is grounded in what you actually did. No invented experience. No inflated claims. No content that falls apart when a hiring manager pushes back.
 
 Available free under MIT license. Runs entirely within your Claude subscription — no API key, no extra costs, no sign-ups.
 
@@ -10,13 +10,14 @@ Available free under MIT license. Runs entirely within your Claude subscription 
 
 ## What It Produces
 
-A full run generates three downloadable Word documents plus a detailed in-chat analysis:
+A full run generates four files plus a detailed in-chat analysis:
 
 | Output | Format | What It Does |
 |--------|--------|--------------|
 | Fit Analysis | In-chat | Dual-voice Advocate/Auditor assessment with fit score, gap map, and Narrative Claims block for downstream agents |
+| Fit Analysis (machine-readable) | .md | Structured YAML frontmatter (company, fit_score, recommendation, top_gaps, top_strengths) plus full analysis body, consumed by [PipelinePilot](https://github.com/jropenshaw1/PipelinePilot) for job search pipeline tracking |
+| Fit Analysis (human-readable) | .docx | Professional Word document version of the full fit analysis |
 | Cover Letter | .docx | Professional letter anchored to your primary positioning claim, grounded in your resume |
-| Optimized Resume | .docx | ATS-friendly version tailored to the specific JD, with secondary claims driving bullet emphasis |
 | Interview Prep Guide | .docx | Full coaching guide with Narrative Stress Test, anticipated questions, gap strategies, behavioral prep, and landmines |
 
 ---
@@ -32,14 +33,13 @@ The skill runs in two phases:
 
 **Phase 2 — Output Generation (parallel, using Phase 1 context)**
 - **Agent 4: Cover Letter Writer** — Opens with your primary positioning claim; self-audits every metric, credential, and technology claim before generating the document
-- **Agent 5: Resume Optimizer** — Uses secondary positioning claims to determine which bullets to elevate; self-audits every bullet against the source resume before generating the document
 - **Agent 6: Interview Prep Guide** — Runs a **Narrative Stress Test** against each positioning claim, generates anticipated questions for both strengths and gaps, builds behavioral prep and a closing statement; self-audits for grounding and claim completeness before generating the document
 
 ---
 
 ## The Narrative Claims System (v2.5+)
 
-The biggest structural improvement in recent versions is the **Narrative Claims handoff block** — a structured output from Agent 3 that all three Phase 2 agents consume explicitly.
+The biggest structural improvement in recent versions is the **Narrative Claims handoff block** — a structured output from Agent 3 that both Phase 2 agents consume explicitly.
 
 Agent 3 produces:
 - A **primary positioning claim** — the single sentence that defines why you belong in this role
@@ -48,7 +48,6 @@ Agent 3 produces:
 
 Phase 2 agents use this block deliberately:
 - Agent 4 anchors the cover letter's opening paragraph to the primary claim
-- Agent 5 elevates the resume bullets that support the secondary claims
 - Agent 6 stress-tests every claim with evidence signals, likely interview questions, preparation areas, and the specific challenge a skeptical interviewer would raise
 
 The result: your written materials and your interview preparation tell the same story — because they're explicitly built from the same positioning logic.
@@ -66,7 +65,6 @@ Every agent in the pipeline follows a **Source Integrity Layer** — a set of ru
 
 Each Phase 2 agent performs a mandatory **Self-Audit Pass** before generating any document:
 - Agent 4 checks every metric, credential, named technology, and compliance framework in the cover letter
-- Agent 5 checks every bullet in the optimized resume — ungrounded bullets are removed silently, not flagged
 - Agent 6 checks every talking point, STAR outline, and strategy recommendation, plus a completeness check confirming every Narrative Claim has a corresponding Stress Test entry
 
 The **Inference Trap rule** prevents a specific failure pattern: if your resume says you led a cloud migration, the skill may not infer that you have experience with AWS IAM governance, user provisioning automation, or any other specific sub-discipline not named in the resume. General concepts do not license specific technical claims.
@@ -142,13 +140,13 @@ Copy the `job-fit-analyst` folder into your Claude skills directory (typically `
 
 ## Companion Context Skill (Personalization Layer)
 
-The skill is fully functional with just a resume and JD. Every user gets the same six-agent analysis, the same Source Integrity Layer, the same Advocate/Auditor framework. No personalization required.
+The skill is fully functional with just a resume and JD. Every user gets the same five-agent analysis, the same Source Integrity Layer, the same Advocate/Auditor framework. No personalization required.
 
-But the cover letters, optimized resumes, and interview guides the skill produces are inherently generic. They are grounded and honest, but they don't sound like you. A companion context skill changes that.
+But the cover letters and interview guides the skill produces are inherently generic. They are grounded and honest, but they don't sound like you. A companion context skill changes that.
 
 ### What It Is
 
-A companion context skill is a private `SKILL.md` file you write and maintain separately from the Job Fit Analyst. It carries your personal voice, your career narrative, your signature proof points, and the framing rules you want applied to every application. When loaded alongside the Job Fit Analyst, it enriches Agents 4 (Cover Letter), 5 (Resume), and 6 (Interview Guide) without modifying the skill's core logic.
+A companion context skill is a private `SKILL.md` file you write and maintain separately from the Job Fit Analyst. It carries your personal voice, your career narrative, your signature proof points, and the framing rules you want applied to every application. When loaded alongside the Job Fit Analyst, it enriches Agents 4 (Cover Letter) and 6 (Interview Guide) without modifying the skill's core logic.
 
 ### What to Include
 
@@ -159,7 +157,7 @@ Build your companion skill incrementally. Start with the sections that matter mo
 - **Signature war stories:** Your 4-7 strongest career proof points with real numbers. Each tagged with the situations where it should be deployed.
 - **Standing framing decisions:** Rules that apply everywhere. Degree equivalency handling, year-count preferences, scope accuracy flags, contact info, formatting.
 - **Current search posture:** Active applications, certifications, excluded companies, anything an agent should know about your current context.
-- **Agent-specific guidance:** What the cover letter should feel like. What the resume optimizer must preserve. What the interview guide should draw from for STAR outlines and closing statements.
+- **Agent-specific guidance:** What the cover letter should feel like. What the interview guide should draw from for STAR outlines and closing statements.
 
 ### Setup
 
@@ -184,7 +182,13 @@ If you maintain a persistent memory layer (such as [OpenBrain](https://github.co
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-**Current version: v2.8**
+**Current version: v2.9**
+
+### v2.9
+- **Removed Agent 5 (Resume Optimizer)** — never achieved reliable output quality; removing it saves tokens and processing time on every run, especially significant when running multiple JFAs in sequence
+- Phase 2 now runs Agents 4 and 6 in parallel (previously 4, 5, and 6)
+- All Agent 5 references removed from Narrative Claims handoff, Source Integrity Layer, triggers, and output files
+- Agents 1, 2, 3, 4, and 6 unchanged
 
 ### v2.8
 - Expanded "Optional Enrichment" section into full **Companion Context Skill** documentation: explains what it is, what to include, how to set it up, and how it interacts with the Source Integrity Layer and Advocate/Auditor framework
