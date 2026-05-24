@@ -105,8 +105,10 @@ Once installed, trigger naturally with any of the following:
 **Cover letter only:**
 > "Write me a cover letter for this job"
 
-**Quick screening:**
-> "Quick take" *(returns fit score + 2-sentence summary only)*
+**Quick screening (JFA lightweight mode):**
+> "Quick take" *(returns fit score + 2-sentence summary only — requires both JD and resume like a full run)*
+
+> **Note:** "Quick Take" is JFA's built-in lightweight mode — it still requires both a JD and a resume. If you build a separate quick-fit triage skill for your own workflow (one that evaluates fit from a JD alone, without a resume), use distinct trigger phrases to avoid routing collisions with JFA.
 
 **Honest assessment:**
 > "Give me the Auditor's honest take on this role"
@@ -193,7 +195,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full version history.
 ### v2.8
 - Expanded "Optional Enrichment" section into full **Companion Context Skill** documentation: explains what it is, what to include, how to set it up, and how it interacts with the Source Integrity Layer and Advocate/Auditor framework
 - Added Persistent Memory Integration subsection covering OpenBrain and similar tools
-- Quick-fit skill now documented in [PipelinePilot](https://github.com/jropenshaw1/PipelinePilot) README as the upstream triage layer that feeds into Job Fit Analyst's full analysis
+- Clarified that Quick Take Mode is JFA's built-in lightweight screening, distinct from any user-built quick-fit triage skills that may exist in a broader pipeline workflow
 
 ### v2.7
 - Agent 6 boundary discipline: core interview preparation (always generic, always generated) is now explicitly separated from external context enrichment (OpenBrain, memory layers, prior session notes). External context is appended in a clearly labeled `EXTERNAL CONTEXT` section at the end of the document when available — never embedded into core sections. Preserves universal usability while enabling full personalization.
@@ -208,7 +210,6 @@ See [CHANGELOG.md](CHANGELOG.md) for full version history.
 - Added Narrative Stress Test to Agent 6: structured stress-test entry for every positioning claim, inserted between Strongest Talking Points and Anticipated Technical Questions
 - Added Agent 6 Self-Audit completeness check: confirms every claim has a corresponding Stress Test entry
 - Agent 4 now anchors cover letter opening to primary positioning claim
-- Agent 5 now uses secondary claims to drive bullet elevation decisions
 
 ### v2.4
 - Output filename sanitization — filesystem-safe naming convention for all generated documents
