@@ -370,6 +370,7 @@ Examples of correct sanitization:
 
 Apply this sanitization to all output filenames:
 
+<!-- Runtime paths below are environment-specific (Claude AI) -->
 - Fit analysis (machine-readable): `/mnt/user-data/outputs/fit_analysis.md` (fixed filename, consumed by PipelinePilot)
 - Fit analysis (human-readable): `/mnt/user-data/outputs/FitAnalysis_[Company].docx`
 - Cover letter: `/mnt/user-data/outputs/CoverLetter_[Company]_[Role].docx`

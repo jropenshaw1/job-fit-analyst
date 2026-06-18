@@ -136,7 +136,7 @@ Both are required. The skill will not run without them.
 git clone https://github.com/jropenshaw1/job-fit-analyst.git
 ```
 
-Copy the `job-fit-analyst` folder into your Claude skills directory (typically `~/.claude/skills/`).
+Copy the `job-fit-analyst` folder into your local Claude skills directory.
 
 ---
 
@@ -163,7 +163,7 @@ Build your companion skill incrementally. Start with the sections that matter mo
 
 ### Setup
 
-1. Create a folder named `your-name-context/` in your Claude skills directory.
+1. Create a folder named `your-name-context/` in your local Claude skills directory.
 2. Write a `SKILL.md` file following the structure above.
 3. In the YAML front matter, set trigger phrases that link it to the Job Fit Analyst workflow (e.g., "write my cover letter", "optimize my resume", "interview guide", "personalize this").
 4. The skill loads automatically alongside the Job Fit Analyst when triggered. No changes to the Job Fit Analyst skill are needed.
