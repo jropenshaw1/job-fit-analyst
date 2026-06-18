@@ -3,7 +3,7 @@ name: job-fit-analyst
 description: "Multi-agent career fit analyst that honestly evaluates job fit using Advocate/Auditor dual voices. Use this skill whenever the user mentions job searching, applying to a role, evaluating a job description against their resume, wants a cover letter for a specific job, asks about culture fit, or says phrases like 'is this role a good fit', 'analyze this job posting', 'help me apply', 'write a cover letter', 'should I apply', or 'how do I stack up'. Also trigger when the user pastes a job description or mentions comparing their experience to job requirements. This skill creates Word documents (.docx) for cover letters and interview guides."
 ---
 
-# Job Search & Fit Analyst — Multi-Agent Workflow (v2.9 • 5-Agent)
+# Job Search & Fit Analyst — Multi-Agent Workflow (v2.10 • 5-Agent)
 
 ## Overview
 

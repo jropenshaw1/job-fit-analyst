@@ -184,7 +184,14 @@ If you maintain a persistent memory layer (such as [OpenBrain](https://github.co
 
 See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-**Current version: v2.9**
+**Current version: v2.10**
+
+### v2.10
+- Updated SKILL.md heading from "The Six Agents" to "The Five Agents" (v2.9 alignment)
+- Removed stale Agent 5 reference in Agent 6 filename sanitization rule
+- AGENTS.md — agent-neutral repo rules, verification checklist, governance pointer, and branch policy for AI coding assistants
+- Environment-specific comment above output filename list in SKILL.md
+- README.md install and companion-skill setup instructions now use portable path references instead of hardcoded local paths
 
 ### v2.9
 - **Removed Agent 5 (Resume Optimizer)** — never achieved reliable output quality; removing it saves tokens and processing time on every run, especially significant when running multiple JFAs in sequence

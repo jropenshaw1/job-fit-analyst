@@ -4,6 +4,24 @@ All notable changes to this skill are documented here.
 
 ---
 
+## [v2.10] — 2026-06-17
+
+### Fixed
+- Updated SKILL.md heading from "The Six Agents" to "The Five Agents" (v2.9 alignment)
+- Removed stale Agent 5 reference in Agent 6 filename sanitization rule
+
+### Added
+- AGENTS.md — agent-neutral repo rules, verification checklist, governance pointer, and branch policy for AI coding assistants
+- Environment-specific comment above output filename list in SKILL.md
+
+### Changed
+- README.md install and companion-skill setup instructions now use portable path references instead of hardcoded local paths
+
+### Not affected
+- No behavioral changes to the five-agent workflow, Source Integrity Layer, or Advocate/Auditor logic
+
+---
+
 ## [v2.9] — 2026-05-23
 
 ### Removed
