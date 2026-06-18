@@ -95,7 +95,7 @@ Use this scale and always justify the number with specifics:
 | 0.7–0.8 | Strong fit. Minor gaps or growth areas. |
 | 0.9–1.0 | Near-perfect alignment. (Be suspicious if you score this — recheck.) |
 
-## The Six Agents
+## The Five Agents
 
 Run agents in two phases:
 - **Phase 1** (parallel): Agents 1, 2, and 3
@@ -299,7 +299,7 @@ Do NOT embed external context (recruiter names, phone screen outcomes, prior con
 
 **Document generation — required for every Agent 6 run:**
 
-After completing the self-audit pass and applying the boundary discipline above, generate the full interview prep guide as a Word document (.docx) using the docx skill at `/mnt/skills/public/docx/SKILL.md`. Save to `/mnt/user-data/outputs/InterviewGuide_[Company]_[Role].docx` using the same filename sanitization rules as Agents 4 and 5. Present the file to the user with the `present_files` tool alongside the cover letter and resume. The interview guide is not optional — it must always be generated as a downloadable document, not delivered as in-chat text only.
+After completing the self-audit pass and applying the boundary discipline above, generate the full interview prep guide as a Word document (.docx) using the docx skill at `/mnt/skills/public/docx/SKILL.md`. Save to `/mnt/user-data/outputs/InterviewGuide_[Company]_[Role].docx` using the same filename sanitization rules as the other document outputs. Present the file to the user with the `present_files` tool alongside the cover letter and resume. The interview guide is not optional — it must always be generated as a downloadable document, not delivered as in-chat text only.
 
 ## Workflow
 
